@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fit Deng AI – AI-powered Fitness Coaching</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-o8C+Xr7NqvLc9XclPoYvEJttAojJ6cnHW1wOjzrAFLF3t1xzU6RZp0Xl1W2SXmXLDH8lqDJ+fCAkO9cu2n0zYg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://kit.fontawesome.com/f523fe7132.js" crossorigin="anonymous"></script>
+  <style>
+    /* Variables */
+    :root { --grad-start: #00D9F5; --grad-end: #8F54FF; }
+
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      overflow-x: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    section { min-height: 100vh; }  /* each fills viewport */
+    a { text-decoration: none; }
+    .text-dark { color: #fff !important; }
+
+    /* Navbar */
+    header {
+      position: fixed; top: 0; width: 100%;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+    .logo { height: 40px; }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a {
+      position: relative; color: #fff; font-weight: 500;
+      transition: color .3s;
+    }
+    nav a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(45deg, var(--grad-start), var(--grad-end));
+      background-size: 200% auto;
+      transition: width .4s ease, background-position .4s ease;
+    }
+    nav a:hover { color: var(--grad-start); }
+    nav a:hover::after { width: 100%; background-position: 100% center; }
+
+    /* Hero Section */
+    .hero {
+      position: relative; display: flex;
+      align-items: center; justify-content: space-around;
+      padding: 0 2rem; overflow: hidden;
+      height: 100vh;
+    }
+    .hero-content {
+      max-width: 40%; z-index: 2;
+      opacity: 0; transform: translateY(50px);
+      animation: slideUp 1s ease-out forwards .2s;
+    }
+    .hero-content h1 { font-size: 4rem; line-height: 1.2; }
+    .hero-content p { margin-top: 1rem; font-size: 1.25rem; }
+    .btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: linear-gradient(45deg, var(--grad-start), var(--grad-end));
+      padding: .75rem 1.5rem; border-radius: 8px;
+      color: #fff; font-weight: 500; background-size: 200% auto;
+      transition: transform .3s, background-position .2s;
+    }
+    .btn:hover { transform: scale(1.05); background-position: right center; }
+    .btn i { font-size: 2rem; color: #fff; }
+    .hero-image {
+      z-index: 2; margin-left: -4rem;
+      opacity: 0; transform: translateX(100px);
+      animation: slideLeft 1s ease-out forwards .2s;
+    }
+    .hero-image img { max-width: 500px; display: block; }
+
+    /* Blobs */
+    .blob {
+      position: absolute; border-radius: 50%; opacity: .6;
+      animation: blob 12s infinite ease-in-out; z-index: 1;
+    }
+    .blob1 { width:600px;height:600px; background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); top:-150px; left:-150px; animation-duration:13s; }
+    .blob2 { width:500px;height:500px; background: linear-gradient(135deg, var(--grad-end), var(--grad-start)); top:250px; right:-100px; animation-duration:10s; animation-direction:reverse; }
+    .blob3 { width:700px;height:700px; background: linear-gradient(135deg, var(--grad-start), var(--grad-end)); bottom:-200px; left:50%; transform:translateX(-50%); animation-duration:14s; }
+
+    /* Features Layout */
+    .feature-section {
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem; height: calc(100vh);
+    }
+    .feature-section:nth-of-type(even) { flex-direction: row-reverse; }
+    .feature-text,
+    .feature-image {
+      flex: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      will-change: transform, opacity;
+      transition: opacity 2s ease-out, transform 2s ease-out;
+    }
+    .feature-text { padding: 2rem; text-align: center; }
+    .feature-image { display: flex; justify-content: center; padding: 2rem; }
+    .feature-image img {
+      max-width: 100%; height: auto; object-fit: contain; border-radius: 12px;
+    }
+    @keyframes fadeInUp {
+      0%   { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .feature-text.animate,
+    .feature-image.animate {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    /* Product Section */
+  .product-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+    height: 100vh;
+  }
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Outer white bezel */
+  .phone-outer {
+    background: #ddd;
+    border-radius: 36px;
+    padding: 5px;             /* white border thickness */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: inline-block;
+  }
+
+  /* Inner black bezel */
+  .phone-frame {
+    position: relative;
+    background: #000;
+    border-radius: 34px;
+    padding: 8px;             /* black border thickness */
+  }
+
+  /* Screen area */
+  .phone-screen {
+    width: 300px;
+    height: 600px;
+    border-radius: 30px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+
+  /* Notch */
+  .phone-frame .notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 32px;
+    background: #000;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 2;
+  }
+  .phone-frame .notch .camera {
+    width: 8px; height: 8px;
+    background: #222; border-radius:50%;
+  }
+  .phone-frame .notch .speaker {
+    width: 40px; height: 4px;
+    background: #222; border-radius:2px;
+  }
+
+  /* Side buttons */
+  .phone-frame .button {
+    position: absolute;
+    left: 319px;
+    background: #ddd;
+    border-radius: 4px;
+  }
+  .phone-frame .button.volume-up {
+    left: -8px; top: 140px;
+    width: 4px; height: 40px;
+  }
+  .phone-frame .button.volume-down {
+    left: -8px; top: 200px;
+    width: 4px; height: 28px;
+  }
+  .phone-frame .button.power {
+    right: -6px; top: 180px;
+    width: 4px; height: 60px;
+  }
+
+  /* Carousel image & text */
+  .carousel-image {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .8s ease;
+    display: block;
+  }
+  .carousel-image.visible { opacity: 1; }
+  .carousel-text {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    max-width: 300px;
+    opacity: 0;
+    transition: opacity .8s ease;
+    color: #fff;
+  }
+  .carousel-text.visible { opacity: 1; }
+
+
+    /* Testimonials Section */
+    .testimonials-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #111;
+    height: 100vh;
+    }
+    .testimonials-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    text-align: center;
+    }
+    .testimonials-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    }
+    .testimonial-card {
+        background: #222;
+        border-radius: 12px;
+        padding: 2rem;
+        flex: 1;
+        max-width: 300px;
+        text-align: center;
+        opacity: 1;
+        transform: translateY(30px);
+        transition: opacity .8s ease-out, transform .8s ease-out, box-shadow .3s ease;
+    }
+    .testimonial-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    .testimonial-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    }
+    .testimonial-card h3 {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 1.25rem;
+    color: #fff;
+    }
+    .testimonial-card .occupation {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 1rem;
+    }
+    .testimonial-card .review {
+    font-style: italic;
+    color: #ddd;
+    margin-bottom: 1rem;
+    }
+    .testimonial-card .stars i {
+    color: #ffc107;
+    margin: 0 2px;
+    }
+    .testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    /* CTA Section */
+    .cta-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: #111;
+    height: 100vh;
+    }
+    .cta-text {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s ease-out, transform .8s ease-out, text-shadow .3s ease;
+    }
+    .cta-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    .cta-text:hover {
+    /* glowing text on hover */
+    text-shadow: 0 0 8px var(--grad-end), 0 0 16px var(--grad-start);
+    cursor: default;
+    }
+
+    .cta-btn {
+    background: linear-gradient(45deg, var(--grad-start), var(--grad-end));
+    background-size: 200% auto;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s ease-out, transform .8s ease-out, transform .3s ease, box-shadow .3s ease;
+    }
+    .cta-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    .cta-btn:hover {
+    transform: scale(1.05);
+    background-position: right center;
+    box-shadow: 0 0 8px var(--grad-start), 0 0 16px var(--grad-end);
+    }
+
+    /* Pricing Section */
+.pricing-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: #111;
+  height: 100vh;
+}
+.pricing-title {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: .5rem;
+}
+.pricing-subtitle {
+  color: #bbb;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+.pricing-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1000px;
+}
+.plan-card {
+  background: #222;
+  border-radius: 12px;
+  padding: 2rem;
+  flex: 1;
+  max-width: 300px;
+  transform: translateY(30px);
+  transition: transform .8s ease-out, box-shadow .3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.plan-card.visible {
+  transform: translateY(0);
+}
+.plan-card h3 {
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+.plan-card .price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--grad-start);
+}
+.plan-card ul {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 20px;
+  text-align: left;
+}
+.plan-card ul li {
+  margin: 0.5rem 0;
+  color: #ccc;
+}
+/* hover lift */
+.plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* Premium highlight */
+.plan-card.premium {
+  background: #111;
+  border: 2px solid var(--grad-start);
+  box-shadow: 0 0 8px var(--grad-end), 0 0 16px var(--grad-start);
+}
+.plan-card.premium:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+.plan-card .plan-btn {
+  margin-top: auto;
+}
+
+.plan-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+
+/* Free plan button */
+.free-btn {
+  background: transparent;
+  border: 2px solid var(--grad-start);
+  color: var(--grad-start);
+}
+.free-btn:hover {
+  background: var(--grad-start);
+  color: #000;
+  transform: scale(1.05);
+}
+
+/* Premium plan button */
+.premium-btn {
+  background: linear-gradient(45deg, var(--grad-start), var(--grad-end));
+  background-size: 200% auto;
+  color: #fff;
+  border: none;
+}
+.premium-btn:hover {
+  background-position: right center;
+  box-shadow: 0 0 8px var(--grad-end), 0 0 16px var(--grad-start);
+  transform: scale(1.05);
+}
+
+/* Team Section */
+.team-section {
+  background: #111;
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.team-section h2 {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+/* ---------------------------------- */
+/* Team Section – Cooler Card Styles  */
+/* ---------------------------------- */
+
+/* Give the container some perspective for 3D tilt */
+.team-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  perspective: 1000px;
+}
+
+/* Card base */
+.team-card {
+  background: rgba(30,30,30,0.8);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 200px;
+  text-align: center;
+  transition: transform .4s ease, box-shadow .4s ease, background .4s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Avatar */
+.team-card img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.2);
+  margin: 0 auto 1rem;
+  display: block;
+  transition: border-color .4s ease, box-shadow .4s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* Name */
+.team-card h3 {
+  font-size: 1.125rem;
+  color: #fff;
+  margin: 0;
+  padding: 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color .4s ease;
+}
+
+/* Hover state: tilt, glow, gradient */
+.team-card:hover {
+  transform: rotateY(15deg) rotateX(10deg) translateY(-10px);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.7);
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+}
+
+/* Avatar hover glow */
+.team-card:hover img {
+  border-color: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+}
+
+/* Name stays white */
+.team-card:hover h3 {
+  color: #fff;
+}
+
+/* Footer */
+.footer-section {
+  background: #111;
+  color: #bbb;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.footer-links,
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+.footer-links a {
+  color: #bbb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .3s;
+}
+.footer-links a:hover {
+  color: var(--grad-start);
+}
+.footer-social a {
+  color: #bbb;
+  font-size: 1.5rem;
+  transition: color .3s;
+}
+.footer-social a:hover {
+  color: var(--grad-start);
+}
+.footer-bottom {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Footer – Gradient Background */
+.footer-section {
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  color: #eee;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.footer-links a {
+  color: #fff;
+}
+.footer-links a:hover {
+  color: rgba(255,255,255,0.8);
+}
+.footer-social a {
+  color: #fff;
+}
+.footer-social a:hover {
+  color: rgba(255,255,255,0.8);
+}
+.footer-bottom {
+  color: #ddd;
+}
+
+/* Product Section Title */
+.product-title {
+  font-size: 2.5rem;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+    /* Other keyframes */
+    @keyframes blob {
+      0%   { border-radius:40% 60% 50% 50%; transform:scale(1) translate(0,0); }
+      33%  { border-radius:60% 40% 60% 40%; transform:scale(1.05) translate(30px,-20px); }
+      66%  { border-radius:50% 50% 40% 60%; transform:scale(0.95) translate(-20px,30px); }
+      100% { border-radius:40% 60% 50% 50%; transform:scale(1) translate(0,0); }
+    }
+    @keyframes slideUp { to { opacity:1; transform:translateY(0); } }
+    @keyframes slideLeft { to { opacity:1; transform:translateX(0); } }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo-best.png" alt="FitDengAI Logo" class="logo">
+    <nav>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#product">Product</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#team">Team</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <div class="hero-content">
+      <h1>AI-powered fitness coaching</h1>
+      <p>Optimize your performance with personalized workout plans that adapt in real-time to your progress.</p>
+      <div class="btn-group">
+        <a href="#product" class="btn">
+          <i class="fab fa-android fa-2x text-dark"></i>
+          Get it on Marketplace
+        </a>
+        <a href="#product" class="btn">
+          <i class="fab fa-apple fa-2x text-dark"></i>
+          Download on the App Store
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="hippo.png" alt="Fit Deng AI Hippo">
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="feature-section" id="feature-1">
+      <div class="feature-text">
+        <h2>🕒 Real-time Data Collection</h2>
+        <p>Tell FitDengAI your starting stats and watch it track duration, reps, speed & effort—so every session is 🔥 tailored just for you!</p>
+      </div>
+      <div class="feature-image">
+        <img src="feature1.png" alt="Real-time data collection">
+      </div>
+    </div>
+
+    <div class="feature-section" id="feature-2">
+      <div class="feature-text">
+        <h2>🤖 Adaptive AI Engine</h2>
+        <p>Our ML model learns from thousands of sessions to tweak intensity, sets & rest—keeping you in the sweet spot of efficiency. 💪</p>
+      </div>
+      <div class="feature-image">
+        <img src="feature2.png" alt="Adaptive AI engine">
+      </div>
+    </div>
+
+    <div class="feature-section" id="feature-3">
+      <div class="feature-text">
+        <h2>🏆 Gamification & Community</h2>
+        <p>Climb leaderboards, join daily challenges, earn badges & chat with peers. Stay motivated, stay connected! 🎉</p>
+      </div>
+      <div class="feature-image">
+        <img src="feature3.png" alt="Gamification and community">
+      </div>
+    </div>
+  </section>
+
+  <section id="product" class="product-section">
+    <h2 class="product-title">See Fit Deng AI in Action</h2>
+  <div class="carousel">
+    <div class="phone-outer">
+      <div class="phone-frame">
+        <div class="notch">
+          <div class="camera"></div>
+          <div class="speaker"></div>
+        </div>
+        <div class="button volume-up"></div>
+        <div class="button volume-down"></div>
+        <div class="button power"></div>
+        <div class="phone-screen">
+          <img src="feature1.png" alt="Onboarding Flow" class="carousel-image visible">
+        </div>
+      </div>
+    </div>
+    <div class="carousel-text visible">Onboarding Flow</div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials" class="testimonials-section">
+  <h2>What the Pros Are Saying</h2>
+  <div class="testimonials-container">
+    <!-- Chris Bumstead -->
+    <div class="testimonial-card" id="review-1">
+      <img src="chris-bumstead.jpg" alt="Chris Bumstead">
+      <h3>Chris Bumstead</h3>
+      <p class="occupation">Professional Bodybuilder &amp; Mr. Olympia Champion</p>
+      <p class="review">
+        <em>
+          “Fit Deng AI has completely transformed my training. The real-time analytics and adaptive feedback push me past plateaus—it's like having an elite coach in my pocket.” 
+        </em>
+      </p>
+      <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+    </div>
+
+    <!-- Patricia (Lean Beef Patty) -->
+    <div class="testimonial-card" id="review-2">
+      <img src="leanbeefpatty.jpg" alt="Patricia (Lean Beef Patty)">
+      <h3>Patricia (“Lean Beef Patty”)</h3>
+      <p class="occupation">Fitness Influencer &amp; TikTok Star</p>
+      <p class="review">
+        <em>
+          “I love the daily challenges and community vibes—Fit Deng AI’s gamification keeps me motivated. And the AI-driven adjustments always match my energy levels perfectly!” 
+        </em>
+      </p>
+      <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+    </div>
+
+    <!-- Noel Deyzel -->
+    <div class="testimonial-card" id="review-3">
+      <img src="daddy-noel.jpg" alt="Noel Deyzel">
+      <h3>Noel Deyzel</h3>
+      <p class="occupation">Fitness Coach &amp; Entrepreneur</p>
+      <p class="review">
+        <em>
+          “The adaptive AI engine is next-level. It tailors intensity to my daily performance, keeping me in the sweet spot of efficiency. This app truly understands fitness!” 
+        </em>
+      </p>
+      <div class="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section id="cta" class="cta-section">
+  <div class="cta-text">Ready to elevate your workouts to the next level? 🚀</div>
+  <button class="cta-btn">Get the App</button>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="pricing-section">
+  <h2 class="pricing-title">Choose the plan that works best for you</h2>
+  <p class="pricing-subtitle">Start free or upgrade for advanced features and personalized coaching.</p>
+  <div class="pricing-container">
+
+    <!-- Freemium Plan -->
+    <div class="plan-card">
+      <h3>Freemium</h3>
+      <p class="price">Free</p>
+      <ul>
+        <li>Real-time Data Collection</li>
+        <li>Basic AI Feedback</li>
+        <li>Community Challenges</li>
+        <li>Limited Leaderboards</li>
+        <li>Daily Reminders</li>
+      </ul>
+      <button class="plan-btn free-btn">Get Started</button>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan-card premium">
+      <h3>Premium</h3>
+      <p class="price">€5.99 / month</p>
+      <ul>
+        <li>Everything in Freemium</li>
+        <li>Adaptive AI Engine</li>
+        <li>Advanced Analytics</li>
+        <li>Unlimited Challenges</li>
+        <li>Exclusive Badges</li>
+        <li>Priority Support</li>
+      </ul>
+      <button class="plan-btn premium-btn">Choose Plan</button>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Team -->
+<section id="team" class="team-section">
+  <h2>Meet the Team</h2>
+  <div class="team-container">
+    <div class="team-card">
+      <img src="andreea-nistor.jpg" alt="Andreea Nistor">
+      <h3>Andreea Nistor</h3>
+    </div>
+    <div class="team-card">
+      <img src="pavel-luca.jpg" alt="Pavel Luca">
+      <h3>Pavel Luca</h3>
+    </div>
+    <div class="team-card">
+      <img src="vali-cenuse.jpg" alt="Vali Cenuse">
+      <h3>Vali Cenuse</h3>
+    </div>
+    <div class="team-card">
+      <img src="raluca-pascu.jpg" alt="Raluca Pascu">
+      <h3>Raluca Pascu</h3>
+    </div>
+    <div class="team-card">
+      <img src="raluca-lapadus.jpg" alt="Raluca Lapadus">
+      <h3>Raluca Lapadus</h3>
+    </div>
+    <div class="team-card">
+      <img src="razvan-campian.jpg" alt="Razvan Campian">
+      <h3>Razvan Campian</h3>
+    </div>
+  </div>
+</section>
+
+  <script>
+    // Feature section fade-up on scroll
+    const sections = document.querySelectorAll('.feature-section');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const txt = entry.target.querySelector('.feature-text');
+        const img = entry.target.querySelector('.feature-image');
+        if (entry.intersectionRatio > 0.1) {
+          txt.classList.add('animate');
+          img.classList.add('animate');
+        } else {
+          txt.classList.remove('animate');
+          img.classList.remove('animate');
+        }
+      });
+    }, { threshold: 0.1 });
+    sections.forEach(sec => io.observe(sec));
+
+    // Simple auto-rotating carousel
+    const slides = [
+      { src: 'feature1.png', text: 'Onboarding Flow' },
+      { src: 'feature2.png', text: 'Dashboard & Stats' },
+      { src: 'feature3.png', text: 'Community Leaderboard' }
+    ];
+    let current = 0;
+    const imgEl = document.querySelector('.carousel-image');
+    const txtEl = document.querySelector('.carousel-text');
+
+    function showSlide(i) {
+      imgEl.classList.remove('visible');
+      txtEl.classList.remove('visible');
+      setTimeout(() => {
+        imgEl.src = slides[i].src;
+        txtEl.textContent = slides[i].text;
+        imgEl.classList.add('visible');
+        txtEl.classList.add('visible');
+      }, 300);
+    }
+
+    setInterval(() => {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    }, 5000);
+
+
+    const cards = document.querySelectorAll('.testimonial-card');
+    const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        } else {
+        entry.target.classList.remove('visible');
+        }
+    });
+    }, { threshold: 0.3 });
+
+    cards.forEach(card => cardObserver.observe(card));
+
+    // Reveal CTA on scroll
+    const ctaText = document.querySelector('.cta-text');
+    const ctaBtn  = document.querySelector('.cta-btn');
+    const ctaObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        }
+    });
+    }, { threshold: 0.3 });
+
+    ctaObserver.observe(ctaText);
+    ctaObserver.observe(ctaBtn);
+
+    // Reveal pricing cards on scroll
+const pricingCards = document.querySelectorAll('.plan-card');
+const pricingObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.3 });
+
+pricingCards.forEach(card => pricingObserver.observe(card));
+  </script>
+
+  <!-- Footer -->
+<footer id="footer" class="footer-section">
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#terms">Terms &amp; Conditions</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="footer-social">
+    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-youtube"></i>
+    </a>
+    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-twitter"></i>
+    </a>
+  </div>
+  <div class="footer-bottom">
+    © 2025 FitDengAI. All rights reserved.
+  </div>
+</footer>
+</body>
+</html>
