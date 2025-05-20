@@ -158,8 +158,8 @@
 
   /* Screen area */
   .phone-screen {
-    width: 300px;
-    height: 600px;
+    width: 250px;
+    height: 546.875px;
     border-radius: 30px;
     overflow: hidden;
     background: #000;
@@ -173,7 +173,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 120px;
-    height: 32px;
+    height: 30px;
     background: #000;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
@@ -195,7 +195,7 @@
   /* Side buttons */
   .phone-frame .button {
     position: absolute;
-    left: 319px;
+    left: 270px;
     background: #ddd;
     border-radius: 4px;
   }
@@ -716,11 +716,11 @@
         <div class="button volume-down"></div>
         <div class="button power"></div>
         <div class="phone-screen">
-          <img src="feature1.png" alt="Onboarding Flow" class="carousel-image visible">
+          <img src="login.png" alt="Login" class="carousel-image visible">
         </div>
       </div>
     </div>
-    <div class="carousel-text visible">Onboarding Flow</div>
+    <div class="carousel-text visible">Login</div>
   </div>
 </section>
 
@@ -877,9 +877,14 @@
 
     // Simple auto-rotating carousel
     const slides = [
-      { src: 'feature1.png', text: 'Onboarding Flow' },
-      { src: 'feature2.png', text: 'Dashboard & Stats' },
-      { src: 'feature3.png', text: 'Community Leaderboard' }
+      { src: 'login.png', text: 'Login' },
+      { src: 'signup.png', text: 'Signup' },
+      { src: 'dashboard.png', text: 'Dashboard & Stats' },
+      { src: 'ai-training.png', text: 'AI Workout & Nutrition Plan Generation' },
+      { src: 'nutrition.png', text: 'AI Nutrition Plan' },
+      { src: 'generated-workout.png', text: 'AI Workout plans' },
+      { src: 'workout-details.png', text: 'Live Workout Session' },
+      { src: 'ranking.png', text: 'Community Leaderboard' }
     ];
     let current = 0;
     const imgEl = document.querySelector('.carousel-image');
